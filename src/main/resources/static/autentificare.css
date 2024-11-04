@@ -1,0 +1,79 @@
+/* Personalizarea culorilor */
+body {
+    background-color: #f5f5f5; /* culoarea fundalului */
+}
+.container {
+    max-width: 400px; /* lățime maximă a containerului */
+    margin-top: 100px; /* distanța de la partea de sus a paginii */
+}
+.card {
+    border: none; /* eliminarea marginii cartelei */
+}
+.form-control {
+    border-radius: 15px; /* border-radius pentru input-uri */
+}
+.card-body .btn{
+    background-color: #06b6d4;
+    color: #ffffff;
+    width: 100%;
+    border-radius: 15px;
+    height: 35px;
+    border-width: 0px;
+}
+.card-body .btn:hover{
+    background-color: #00c8eb;
+}
+#emailError, #passwordError {
+    color : red;
+}
+.change-visibility {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-125%);
+    cursor: pointer;
+    background-color: #ffffff;
+}
+.change-visibility:hover{
+    background-color: #e5eaf1;
+    border-radius: 50%;
+}
+#hidePassword{
+    display: none;
+}
+.forgot-password, .need-account{
+    text-decoration: none;
+    color: #6c757d;
+}
+.forgot-password:hover, .need-account:hover{
+    color: #06b6d4;
+    text-decoration: underline;
+}
+.warning-message {
+    position: fixed;
+    top: 40px;
+    right: 1px;
+    max-width: 400px;
+    background-color: #edd4d4;
+    border: 1px solid #edd4d4;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1050; /* Ensures it appears above other content */
+    opacity: 1;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.warning-message div{
+    font-size: 14px;
+}
+
+/* Hide the warning message with animation */
+.warning-message.hide {
+    opacity: 0;
+    transform: translateX(100%);
+}
