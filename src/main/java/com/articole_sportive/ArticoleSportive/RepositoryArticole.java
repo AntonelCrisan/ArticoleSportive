@@ -1,4 +1,6 @@
 package com.articole_sportive.ArticoleSportive;
 
-public interface RepositoryArticole {
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface RepositoryArticole  extends MongoRepository<Articole, String> {
 }
