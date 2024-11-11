@@ -36,7 +36,19 @@ export default function Filtrare() {
     },
     {
         name: 'Antrenament acasa',
-        subcategories: [''],
+        subcategories: ['Coarda de sarit', 'Benzi elastice', 'Mingii fitness si discuri pentru echilibru', 'Covoras fitness', 'Greutati si gantere', 'Gantere', 'Bari fitness si bari paralele', 'Accesorii fitness inteligente', 'Antrenament acasa si altele'],
+      },
+      {
+        name: 'Accesorii fitness',
+        subcategories: ['Curele fitness', 'Manusi', 'Shakere', 'Sticle', 'Chingi', 'Prosoape'],
+      },
+      {
+        name: 'Genti si ghiozdane',
+        subcategories: ['Genti pentru sala', 'Ghiozdane', 'Accesorii pentru mancare'],
+      },
+      {
+        name: 'Accesorii in functie de activitate',
+        subcategories: ['Alergat', 'Sporturi de contact', 'Yoga si pilates', 'Terapii cu gheata', 'Inot'],
       },
     // Adaugă aici și alte categorii cu subcategorii
   ];
@@ -98,7 +110,8 @@ export default function Filtrare() {
         backgroundColor: '#257180',
         color: '#fff',
         fontSize: '0.75rem', // Font mai mic pentru buton
-        marginTop: '2rem'
+        marginTop: '2rem',
+        marginLeft: '3rem'
       }}
       >
         <FilterAltIcon />

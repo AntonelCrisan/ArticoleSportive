@@ -19,13 +19,14 @@ const Item = styled(Paper)(({ theme }) => ({
   boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)',
 }));
 
-export default function RowAndColumnSpacing() {
+export default function PaginaAcasa() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/')
+    axios.get('http://localhost:8080/api/')
       .then((response) => {
         setData(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error('Eroare la obținerea datelor:', error);
@@ -45,12 +46,12 @@ export default function RowAndColumnSpacing() {
               <Grid item xs={6} sm={4} md={2} key={index}>
                 <Item>
                   <img
-                    src={item.image}
-                    alt={item.name}
+                    src={item.imagine}
+                    alt={item.nume}
                     style={{ width: '100%', height: 'auto', marginBottom: '8px' }}
                   />
-                  <h4 style={{ margin: '5px 0', fontSize: '0.9rem',  overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>{item.name}</h4>
-                  <p style={{ margin: '3px 0', fontSize: '0.8rem', color: '#CB6040' }}><strong>{item.price} RON</strong></p>
+                  <h4 style={{ margin: '5px 0', fontSize: '0.9rem',  overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>{item.nume}</h4>
+                  <p style={{ margin: '3px 0', fontSize: '0.8rem', color: '#CB6040' }}><strong>{parseFloat((item.pret * 4.61).toFixed(2))} RON</strong></p>
                   <Button
                     variant="contained"
                     sx={{

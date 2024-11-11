@@ -14,6 +14,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { Link } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -118,7 +119,10 @@ export default function PrimarySearchAppBar() {
         </IconButton>
         <p>Cosul meu</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem onClick={handleProfileMenuOpen}
+      component={Link}
+               to="/autentificare"
+      >
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -148,7 +152,6 @@ export default function PrimarySearchAppBar() {
           <Typography
             variant="h6"
             noWrap
-            component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             Articole Sportive
@@ -186,9 +189,12 @@ export default function PrimarySearchAppBar() {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
+              component={Link}
+               to="/autentificare"
             >
               <AccountCircle />
             </IconButton>
+
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton

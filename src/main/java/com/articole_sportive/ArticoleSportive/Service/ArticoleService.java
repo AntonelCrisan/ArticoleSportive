@@ -1,5 +1,7 @@
-package com.articole_sportive.ArticoleSportive;
+package com.articole_sportive.ArticoleSportive.Service;
 
+import com.articole_sportive.ArticoleSportive.Entity.Articole;
+import com.articole_sportive.ArticoleSportive.Repository.RepositoryArticole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +11,6 @@ public class ArticoleService {
     @Autowired
     private RepositoryArticole articole;
     public List<Articole> getAllArticole() {
-        System.out.println("Articole din baza de date: " + articole.findAll().toString());
         return  articole.findAll();
     }
 }
