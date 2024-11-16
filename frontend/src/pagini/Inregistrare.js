@@ -15,19 +15,17 @@ export default function Inregistrare() {
   const handleSubmit = async(event) => {
     event.preventDefault();
     const data = {nume, email, parola};
-    try {
-      const response = await axios.post('http://localhost:8080/auth/inregistrare', data);
-      if(parola.length < 8){
-        setError('Parola trebuie sa aiba minim 8 caractere');
-      }
-      navigate('/autentificare');
-    } catch (error) {
-      if (error.response && error.response.status === 409) {
-        setError("Email-ul este deja folosit.");
-      } else {
-        setError("A apărut o eroare la înregistrare.");
-      }
-    }
+    axios.post('http://localhost:8080/inregistrare', data)
+      .then(response => {
+        navigate('/autentificare');
+      })
+      .catch(error => {
+        if (error.response && error.response.status === 409) {
+          setError('Email-ul este deja folosit.');
+        } else {
+          setError('Eroare la înregistrare. Te rugăm să încerci din nou.');
+        }
+      });
   }
   return (
   <Box

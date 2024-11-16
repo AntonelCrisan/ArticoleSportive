@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,7 +16,9 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Link } from 'react-router-dom';
-
+import { useNavigate, useLocation  } from 'react-router-dom';
+import { utilizatorAutentificat } from '../utils/utilizatorAutentificat';
+import { useCart } from './CantitateCos';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -56,12 +59,21 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { cartQuantity } = useCart();
+  const navigate = useNavigate();
+  const location = useLocation();
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      const authStatus = await utilizatorAutentificat();
+      setIsAuthenticated(authStatus);
+    };
+    checkAuthStatus();
+  }, []);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -74,11 +86,9 @@ export default function PrimarySearchAppBar() {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
   const menuId = 'primary-search-account-menu';
 
 
@@ -101,19 +111,19 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
+          <Badge badgeContent={0} color="error">
             <FavoriteIcon />
           </Badge>
         </IconButton>
         <p>Favorite</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem component={Link} to={'/cos'}>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
+          <Badge badgeContent={cartQuantity} color="error" >
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
@@ -121,8 +131,9 @@ export default function PrimarySearchAppBar() {
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}
       component={Link}
-               to="/autentificare"
+               to={isAuthenticated ? '/profil' : '/autentificare'}
       >
+        
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -130,15 +141,16 @@ export default function PrimarySearchAppBar() {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+         <AccountCircle />
         </IconButton>
-        <p>Profil</p>
+        {isAuthenticated ? <p>Profil</p> : <p>Autentificare</p> }
+        
       </MenuItem>
     </Menu>
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1}}>
       <AppBar position="static" sx={{ backgroundColor: '#CB6040' }}>
         <Toolbar>
           <IconButton
@@ -151,8 +163,9 @@ export default function PrimarySearchAppBar() {
           </IconButton>
           <Typography
             variant="h6"
-            noWrap
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+            sx={{textDecoration: 'none', color: '#fff'}}
+             component={Link}
+               to={'/'}
           >
             Articole Sportive
           </Typography>
@@ -176,8 +189,9 @@ export default function PrimarySearchAppBar() {
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
+              component={Link} to={'/cos'}
             >
-              <Badge badgeContent={1} color="error">
+              <Badge badgeContent={cartQuantity} color="error">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -190,7 +204,7 @@ export default function PrimarySearchAppBar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
               component={Link}
-               to="/autentificare"
+               to={isAuthenticated ? '/profil' : '/autentificare'}
             >
               <AccountCircle />
             </IconButton>

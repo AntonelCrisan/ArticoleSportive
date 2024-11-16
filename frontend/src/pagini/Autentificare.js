@@ -16,9 +16,11 @@ export default function Autentificare() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/auth/autentificare', { email, parola },  { withCredentials: true });
-      // Redirecționare către pagina principală
-      navigate('/');
+      const response =  await axios.post('http://localhost:8080/autentificare', { email, parola });
+      if(response.status === 200){
+        localStorage.setItem('token', response.data);
+        navigate('/');
+      }
     } catch (error) {
       setError("Email sau parolă incorectă");
     }

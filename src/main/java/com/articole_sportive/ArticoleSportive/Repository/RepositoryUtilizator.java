@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface RepositoryUtilizator extends JpaRepository<Utilizator, Integer> {
-    Optional<Utilizator> findByEmail(String email);
+public interface RepositoryUtilizator extends JpaRepository<Utilizator, Long> {
+    Utilizator findByEmail(String email);
 }

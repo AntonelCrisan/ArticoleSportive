@@ -17,14 +17,14 @@ public class UtilizatorService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     public void inregistrareUtilizator(Utilizator utilizator) throws Exception {
         // Verifică dacă email-ul este deja folosit
-        Optional<Utilizator> utilizatorExistent = repositoryUtilizator.findByEmail(utilizator.getEmail());
-        if (utilizatorExistent.isPresent()) {
+        Utilizator utilizatorExistent = repositoryUtilizator.findByEmail(utilizator.getEmail());
+        if (utilizatorExistent != null) {
             throw new Exception("Email-ul este deja folosit.");
         }
         utilizator.setParola(bCryptPasswordEncoder.encode(utilizator.getParola()));
         repositoryUtilizator.save(utilizator);
     }
     public Utilizator findByEmail(String email) {
-        return repositoryUtilizator.findByEmail(email).orElse(null);
+        return repositoryUtilizator.findByEmail(email);
     }
 }
