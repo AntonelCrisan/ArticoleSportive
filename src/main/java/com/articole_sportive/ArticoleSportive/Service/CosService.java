@@ -26,6 +26,12 @@ public class CosService {
     @Autowired
     private RepositoryArticole repositoryArticole;
 
+    @Autowired
+    public CosService(RepositoryCos repositoryCos, RepositoryUtilizator repositoryUtilizator, RepositoryArticole repositoryArticole) {
+        this.repositoryCos = repositoryCos;
+        this.repositoryUtilizator = repositoryUtilizator;
+        this.repositoryArticole = repositoryArticole;
+    }
     public List<CosDTO> obtineCos(Long idUtilizator) {
         List<Cos> cos = repositoryCos.findByUtilizator_Id(idUtilizator);
 
@@ -38,20 +44,37 @@ public class CosService {
         return cosDTOs;
     }
 
-    public Cos adaugaInCos(Long idUtilizator, Long idProdus, int cantitate) {
+    public void adaugaInCos(Long idUtilizator, Long idProdus, int cantitate) {
+        // Găsește utilizatorul și produsul
         Utilizator utilizator = repositoryUtilizator.findById(idUtilizator).orElse(null);
         Articole produs = repositoryArticole.findById(idProdus).orElse(null);
 
-        if (utilizator != null && produs != null) {
-            Cos cos = new Cos();
-            cos.setUtilizator(utilizator);
-            cos.setArticole(produs);
-            cos.setCantitate(cantitate);
-            return repositoryCos.save(cos);
+        if (utilizator == null || produs == null) {
+            throw new RuntimeException("Utilizatorul sau produsul nu există.");
         }
-        return null;
-    }
 
+        // Verifică dacă produsul există deja în coșul utilizatorului
+        Cos cosExistent = repositoryCos.findByUtilizatorAndArticole(utilizator, produs);
+
+        if (cosExistent != null) {
+            // Dacă produsul există, actualizează cantitatea
+            cosExistent.setCantitate(cosExistent.getCantitate() + cantitate);
+            repositoryCos.save(cosExistent);
+        } else {
+            // Dacă produsul nu există, adaugă un entry nou
+            Cos cosNou = new Cos();
+            cosNou.setUtilizator(utilizator);
+            cosNou.setArticole(produs);
+            cosNou.setCantitate(cantitate);
+            repositoryCos.save(cosNou);
+        }
+    }
+    public void actualizeazaCos(Cos cos) {
+        repositoryCos.save(cos);
+    }
+    public Cos gasesteCosById(Long idCos) {
+        return repositoryCos.findById(idCos).orElse(null);
+    }
     public void stergeDinCos(Long idCos) {
         repositoryCos.deleteById(idCos);
     }

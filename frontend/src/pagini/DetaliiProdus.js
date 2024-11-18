@@ -21,6 +21,23 @@ function DetaliiProdus() {
         });
     }
   }, [nume, produsId]); 
+  const handleAddToCart = async (produsId, cantitate) => {
+    const token = localStorage.getItem('token');
+    
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/cos/adauga',
+        null,
+        {
+          params: { idProdus: produsId, cantitate: cantitate },
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+      console.log('Produs adăugat:', response.data);
+    } catch (error) {
+      console.error('Eroare la adăugare:', error);
+    }
+  };
   return (
     <div>
      <Navbar />
@@ -58,6 +75,7 @@ function DetaliiProdus() {
                 backgroundColor: '#FD8B51',
               },
             }}
+            onClick={() => {handleAddToCart(produsId, 1)}}
           >
             Adaugă în coș
           </Button>

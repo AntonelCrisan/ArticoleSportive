@@ -31,7 +31,6 @@ function Cos() {
   }, [token, setCartQuantity]);
 
   const handleRemoveProduct = (productId) => {
-    console.log("Product ID:", productId);
     // Logica pentru a șterge produsul din coș
     axios.delete(`http://localhost:8080/cos/sterge/${productId}`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -43,27 +42,34 @@ function Cos() {
         setError("Eroare la ștergerea produsului.");
       });
   };
-
-  const handleQuantityChange = (productId, change) => {
+  const handleQuantityChange = (idCos, change) => {
     const updatedProducts = produse.map(produs => {
-      if (produs.idPordus === productId) {
-        let newQuantity = produs.cantitate + change;
-        if (newQuantity >= 0) {
-          return { ...produs, cantitate: newQuantity };
+        if (produs.id === idCos) {
+            let newQuantity = produs.cantitate + change;
+            if (newQuantity >= 0) {
+                return { ...produs, cantitate: newQuantity };
+            }
         }
-      }
-      return produs;
+        return produs;
     });
 
     setProduse(updatedProducts);
 
-    // Logica pentru a actualiza cantitatea în backend
-    axios.put(`http://localhost:8080/cos/sterge/${productId}`, { cantitate: updatedProducts.find(p => p.id === productId).cantitate }, {
-      headers: { Authorization: `Bearer ${token}` }
-    }).catch(error => {
-      setError("Eroare la actualizarea cantității.");
+    // Actualizează cantitatea în backend
+    const updatedProduct = updatedProducts.find(p => p.id === idCos);
+
+    axios.put(`http://localhost:8080/cos/actualizeaza`, 
+        { idCos, cantitate: updatedProduct.cantitate },
+        { headers: { Authorization: `Bearer ${token}` } }
+    )
+    .catch(error => {
+        setError("Eroare la actualizarea cantității.");
     });
-  };
+};
+
+
+  
+  
 
   return (
     <div>

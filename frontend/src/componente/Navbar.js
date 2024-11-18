@@ -16,7 +16,6 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Link } from 'react-router-dom';
-import { useNavigate, useLocation  } from 'react-router-dom';
 import { utilizatorAutentificat } from '../utils/utilizatorAutentificat';
 import { useCart } from './CantitateCos';
 const Search = styled('div')(({ theme }) => ({
@@ -64,8 +63,6 @@ export default function Navbar() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { cartQuantity } = useCart();
-  const navigate = useNavigate();
-  const location = useLocation();
   useEffect(() => {
     const checkAuthStatus = async () => {
       const authStatus = await utilizatorAutentificat();
@@ -82,10 +79,6 @@ export default function Navbar() {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
