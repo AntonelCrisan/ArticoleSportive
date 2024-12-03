@@ -12,6 +12,8 @@ import Rating from '@mui/material/Rating';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Link } from 'react-router-dom';
 import ImageSlider from '../componente/ImageSlider';
+import EditareProdusDialog from '../componente/EditarePordusDialog';
+import AdaugareProduse from '../componente/AdaugareProduse';
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#fff',
   ...theme.typography.body2,
@@ -36,10 +38,18 @@ export default function PaginaAcasa() {
         console.error('Eroare la obținerea datelor:', error);
       });
   }, []);
-
   const handleAddToCart = async (produsId, cantitate) => {
     const token = localStorage.getItem('token');
     
+    if (!token) {
+      // Dacă utilizatorul nu este autentificat, adaugă produsul în localStorage
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.push({ idProdus: produsId, cantitate: cantitate });
+      localStorage.setItem('cart', JSON.stringify(cart));
+      console.log('Produs adăugat în localStorage:', { idProdus: produsId, cantitate: cantitate });
+      return;
+    }
+  
     try {
       const response = await axios.post(
         'http://localhost:8080/cos/adauga',
@@ -49,12 +59,24 @@ export default function PaginaAcasa() {
           headers: { Authorization: `Bearer ${token}` }
         }
       );
-      console.log('Produs adăugat:', response.data);
+      
+      if(response.status === 200) {
+        console.log('Produs adăugat în coș:', response.data);
+      }
     } catch (error) {
       console.error('Eroare la adăugare:', error);
     }
   };
-
+  const getRoleFromToken = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        const payload = JSON.parse(atob(token.split('.')[1]));  // Decodifici partea middle a tokenului JWT
+        return payload.rol;  // Extragi rolul utilizatorului
+    }
+    return null;
+};
+const role = getRoleFromToken();
+  
   return (
     <Box sx={{ width: '100%', backgroundColor: '#f5f5f5' }}>
       <Navbar />
@@ -64,6 +86,8 @@ export default function PaginaAcasa() {
       <Box sx={{ width: 250, flexShrink: 0 }}>
         <Filtrare />
       </Box>
+      {role === 'admin' ? <AdaugareProduse/> : null}
+      
       <Box sx={{ display: 'flex' }}>
         <Box sx={{ flexGrow: 1, padding: '16px', marginLeft: '16px' }}>
           <Grid container rowSpacing={2} columnSpacing={2}>
@@ -83,6 +107,8 @@ export default function PaginaAcasa() {
                       cursor: 'pointer'
                     }} 
                   />
+                  {role === 'admin' ? <EditareProdusDialog idProdus={item.id}/> : null}
+                 
                 <Link to={`/detaliiProdus?nume=${item.nume}&id=${item.id}`}>
                   <img
                     src={item.imagine}
@@ -91,7 +117,7 @@ export default function PaginaAcasa() {
                   />
                   </Link>
                   <h4 style={{ margin: '5px 0', fontSize: '0.9rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.nume}</h4>
-                  <p style={{ margin: '3px 0', fontSize: '0.8rem', color: '#CB6040' }}><strong>{parseFloat((item.pret * 4.61).toFixed(2))} RON</strong></p>
+                  <p style={{ margin: '3px 0', fontSize: '0.8rem', color: '#CB6040' }}><strong>{item.pret} RON</strong></p>
                   <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}> {/* Centrăm Rating-ul */} 
                     <Rating
                       style={{ margin: '3px 0' }}
@@ -100,6 +126,7 @@ export default function PaginaAcasa() {
                       onChange={(event, newValue) => {
                         setValue(newValue);
                       }}
+                      key={index}
                     />
                   </Box>
                   

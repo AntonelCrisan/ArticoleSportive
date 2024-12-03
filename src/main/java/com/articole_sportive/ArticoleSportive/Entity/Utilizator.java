@@ -16,15 +16,17 @@ public class Utilizator {
     private String nume;
     private String email;
     private String parola;
+    private String rol;
     public Utilizator() {
         super();
     }
 
-    public Utilizator(Long id, String nume, String email, String parola) {
+    public Utilizator(Long id, String nume, String email, String parola, String rol) {
         this.id = id;
         this.nume = nume;
         this.email = email;
         this.parola = parola;
+        this.rol = rol;
     }
     public String getNume() {
         return nume;
@@ -56,5 +58,13 @@ public class Utilizator {
 
     public Long getId() {
         return id;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 }

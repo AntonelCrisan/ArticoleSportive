@@ -5,6 +5,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import org.springframework.data.annotation.Id;
 
+import java.nio.channels.FileChannel;
 import java.util.Date;
 @Entity
 @Table(name="articole")

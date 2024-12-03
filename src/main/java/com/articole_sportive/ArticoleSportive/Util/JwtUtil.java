@@ -14,9 +14,10 @@ import java.util.function.Function;
 public class JwtUtil {
     private final String SECRET_KEY = Dotenv.load().get("JWT_SECRET_KEY"); // Cheia secretă stocată în .env
     private final long JWT_EXPIRATION_MS = 86400000; // 24 de ore (în milisecunde)
-    public String generateToken(String email, Long idUtilizator) {
+    public String generateToken(String email, Long idUtilizator, String rol) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("idUtilizator", idUtilizator);
+        claims.put("rol", rol);
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(email)
@@ -30,6 +31,9 @@ public class JwtUtil {
     }
     public Long extractIdUtilizator(String token) {
         return extractAllClaims(token).get("idUtilizator", Long.class);
+    }
+    public String extractRol(String token) {
+        return extractAllClaims(token).get("rol", String.class);
     }
     public boolean validateToken(String token) {
         try {

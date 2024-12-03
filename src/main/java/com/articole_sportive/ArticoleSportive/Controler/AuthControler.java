@@ -3,8 +3,6 @@ package com.articole_sportive.ArticoleSportive.Controler;
 import com.articole_sportive.ArticoleSportive.Entity.Utilizator;
 import com.articole_sportive.ArticoleSportive.Service.UtilizatorService;
 import com.articole_sportive.ArticoleSportive.Util.JwtUtil;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +38,8 @@ public class AuthControler {
         if (userExistent == null || !passwordEncoder.matches(utilizator.getParola(), userExistent.getParola())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email sau parolă incorectă");
         }
-        String token = jwtUtil.generateToken(userExistent.getEmail(), userExistent.getId());
+        String token = jwtUtil.generateToken(userExistent.getEmail(), userExistent.getId(), userExistent.getRol());
+        System.out.println("Token" + token);
         return ResponseEntity.ok(token);
     }
     @GetMapping("/profil")

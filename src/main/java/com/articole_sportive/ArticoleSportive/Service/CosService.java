@@ -78,4 +78,7 @@ public class CosService {
     public void stergeDinCos(Long idCos) {
         repositoryCos.deleteById(idCos);
     }
+    public void stergeProdus(Long idPordus){
+        repositoryCos.deleteById(idPordus);
+    }
 }

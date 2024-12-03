@@ -7,7 +7,7 @@ import Link from '@mui/material/Link';
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { syncCartWithBackend } from '../componente/syncCartWithBackend';
 export default function Autentificare() {
   const [email, setEmail] = useState('');
   const [parola, setParola] = useState('');
@@ -19,6 +19,7 @@ export default function Autentificare() {
       const response =  await axios.post('http://localhost:8080/autentificare', { email, parola });
       if(response.status === 200){
         localStorage.setItem('token', response.data);
+        await syncCartWithBackend();
         navigate('/');
       }
     } catch (error) {

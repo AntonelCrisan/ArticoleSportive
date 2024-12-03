@@ -109,9 +109,7 @@ public class CosControler {
             cos.setCantitate(cantitate);
             cosService.actualizeazaCos(cos);
             return ResponseEntity.ok("Cantitate actualizată");
-        } else {
-            cosService.stergeDinCos(idCos);
-            return ResponseEntity.ok("Produs șters din coș");
         }
+        return null;
     }
 }
