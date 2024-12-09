@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import ImageSlider from '../componente/ImageSlider';
 import EditareProdusDialog from '../componente/EditarePordusDialog';
 import AdaugareProduse from '../componente/AdaugareProduse';
+import useWebSocket from '../componente/useWebSocket';
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#fff',
   ...theme.typography.body2,
@@ -27,7 +28,7 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function PaginaAcasa() {
   const [data, setData] = useState([]);
   const [value, setValue] = React.useState(4);
-
+  const notifications = useWebSocket('http://localhost:8080/ws', '/topic/notifications');
   useEffect(() => {
     axios.get('http://localhost:8080/')
       .then((response) => {
@@ -87,7 +88,26 @@ const role = getRoleFromToken();
         <Filtrare />
       </Box>
       {role === 'admin' ? <AdaugareProduse/> : null}
-      
+      <Box sx={{
+        width: '600px',            // Lățimea componentului
+        height: '200px',           // Înălțimea componentului
+        overflowY: 'auto',         // Scroll bar pe verticală
+        border: '1px solid #ddd',  // Adaugă o bordură pentru vizualizare
+        padding: '16px',
+        backgroundColor: '#f5f5f5',
+         marginLeft: '3rem'
+      }}>
+      <h2>Notificări:</h2>
+            <ul>
+                {notifications.length > 0 ? (
+                    notifications.map((notif, index) => (
+                        <li key={index}>{notif}</li>
+                    ))
+                ) : (
+                    <li>Nu există notificări.</li>
+                )}
+            </ul>
+      </Box>
       <Box sx={{ display: 'flex' }}>
         <Box sx={{ flexGrow: 1, padding: '16px', marginLeft: '16px' }}>
           <Grid container rowSpacing={2} columnSpacing={2}>
