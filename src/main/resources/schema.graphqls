@@ -1,0 +1,10 @@
+type Query {
+  profilUtilizator(id: ID!): Utilizator
+}
+
+type Utilizator {
+  id: ID!
+  nume: String!
+  email: String!
+  rol: String!
+}
